@@ -42,7 +42,7 @@ def STA_Setup(ssid, password):
                 print("Connection timeout")
                 sta_if.disconnect()
                 # Optional: reset device after multiple failures
-                reset()
+                # reset()
                 return False
             time.sleep(1)
             timeout -= 1
