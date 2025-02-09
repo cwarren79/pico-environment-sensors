@@ -1,0 +1,7 @@
+# WiFi credentials
+WIFI_SSID = "your_wifi_ssid"
+WIFI_PASSWORD = "your_wifi_password"
+
+# API configuration
+API_HOST = "api.environment.local"
+SENSOR_ID = "sensor_id" 
