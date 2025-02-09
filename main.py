@@ -7,12 +7,12 @@ from pms5003 import PMS5003
 from machine import Pin, UART, reset
 import config
 
-DHT = dht.DHT22(5)
+DHT = dht.DHT22(config.DHT_PIN)
 
 pms5003 = PMS5003(
-    uart=UART(1, tx=Pin(8), rx=Pin(9), baudrate=9600),
-    pin_enable=Pin(2),
-    pin_reset=Pin(3),
+    uart=UART(config.PMS_UART_ID, tx=Pin(config.PMS_TX_PIN), rx=Pin(config.PMS_RX_PIN), baudrate=config.PMS_BAUDRATE),
+    pin_enable=Pin(config.PMS_ENABLE_PIN),
+    pin_reset=Pin(config.PMS_RESET_PIN),
     mode="active",
 )
 
