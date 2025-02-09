@@ -113,28 +113,24 @@ while True:
 
     headers = {"content-type": "application/json; charset=utf-8"}
     dht_data = get_dht_data()
-    if dht_data == {}:
-        time.sleep(1)
-        continue
-    print(ujson.dumps(dht_data))
-    try:
-        dht_response = urequests.post(f"https://{config.API_HOST}/dht", headers=headers, data=ujson.dumps(dht_data), timeout=1)
-    except:
-        print("Request error")
-        continue
-    print(dht_response.text)
+    if dht_data != {}:
+        print(ujson.dumps(dht_data))
+        try:
+            dht_response = urequests.post(f"https://{config.API_HOST}/dht", headers=headers, data=ujson.dumps(dht_data), timeout=1)
+            print(dht_response.text)
+            dht_response.close()
+        except:
+            print("DHT request error")
 
     pms_data = get_pms_data()
-    if pms_data == {}:
-        time.sleep(1)
-        continue
-    print(ujson.dumps(pms_data))
+    if pms_data != {}:
+        print(ujson.dumps(pms_data))
     try:
         pms_response = urequests.post(f"https://{config.API_HOST}/pms", headers=headers, data=ujson.dumps(pms_data), timeout=1)
+        print(pms_response.text)
+        pms_response.close()
     except:
-        print("Request error")
+        print("PMS request error")
         continue
-    print(pms_response.text)
+
     time.sleep(5)
-    dht_response.close()
-    pms_response.close()
