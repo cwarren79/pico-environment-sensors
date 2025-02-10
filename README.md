@@ -74,13 +74,37 @@ For development/debugging:
 The API endpoint specified in `config.py` should:
 - Accept POST requests
 - Expect JSON data containing sensor readings
-- Support the following data format:
+- Provide two endpoints:
+  1. `/dht` for temperature and humidity data
+  2. `/pms` for particulate matter data
+
+The endpoints should support the following data formats:
+
+1. DHT endpoint (`/dht`):
 ```json
 {
-    "sensor_id": "string",
-    "temperature": float,
-    "humidity": float,
-    "pm25": float,
-    "pm10": float
+    "temperature": int,
+    "humidity": int,
+    "tags": ["sensor:sensor_id"]
+}
+```
+
+2. PMS endpoint (`/pms`):
+```json
+{
+    "pm_ug_per_m3": {
+        "1.0um": float,
+        "2.5um": float,
+        "10um": float
+    },
+    "pm_per_1l_air": {
+        "0.3um": float,
+        "0.5um": float,
+        "1.0um": float,
+        "2.5um": float,
+        "5.0um": float,
+        "10um": float
+    },
+    "tags": ["sensor:sensor_id"]
 }
 ```
