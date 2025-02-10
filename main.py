@@ -111,7 +111,7 @@ while True:
         time.sleep(5)
         continue
 
-    headers = {"content-type": "application/json; charset=utf-8"}
+    headers = {"content-type": "application/json; charset=utf-8", "Authorization": f"Bearer {config.API_KEY}"}
     dht_data = get_dht_data()
     if dht_data != {}:
         print(ujson.dumps(dht_data))

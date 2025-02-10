@@ -4,4 +4,18 @@ WIFI_PASSWORD = "your_wifi_password"
 
 # API configuration
 API_HOST = "api.environment.local"
-SENSOR_ID = "sensor_id" 
+API_KEY = "your_api_key"
+
+# Unique ID for the sensor
+SENSOR_ID = "sensor_id"
+
+# DHT22 Pin Assignments
+DHT_PIN = 5
+
+# PMS5003 Pin Assignments
+PMS_UART_ID = 1
+PMS_TX_PIN = 8
+PMS_RX_PIN = 9
+PMS_ENABLE_PIN = 2
+PMS_RESET_PIN = 3
+PMS_BAUDRATE = 9600
