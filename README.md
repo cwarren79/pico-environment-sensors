@@ -13,14 +13,12 @@ A MicroPython project for collecting environmental sensor data using a Raspberry
 
 ## Configuration
 
-The Pico W needs a `config.py` file to store your network and API settings. This file should contain:
+The Pico W needs a `config.py` file to store your network and API settings:
 
-```python
-WIFI_SSID = "your_wifi_ssid"        # Your WiFi network name
-WIFI_PASSWORD = "your_wifi_password" # Your WiFi password
-API_HOST = "api.environment.local"   # The host address for your API endpoint
-SENSOR_ID = "sensor_id"             # Unique identifier for this sensor
-```
+1. Copy `config.py.example` to `config.py`
+2. Edit `config.py` and update the settings with your values
+
+All configuration options are documented with comments in the example file.
 
 You can upload the required files using any of these methods:
 
