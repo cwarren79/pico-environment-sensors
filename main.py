@@ -6,6 +6,9 @@ import ujson
 from pms5003 import PMS5003
 from machine import Pin, UART, reset
 import config
+import ubinascii
+import hmac
+import hashlib
 
 DHT = dht.DHT22(config.DHT_PIN)
 
@@ -100,6 +103,11 @@ def get_pms_data():
     return result
 
 
+def create_signature(payload, secret):
+    h = hmac.new(secret.encode(), payload.encode(), hashlib.sha256)
+    return ubinascii.b2a_base64(h.digest()).decode().strip()
+
+
 while True:
     try:
         if not STA_Setup(config.WIFI_SSID, config.WIFI_PASSWORD):
@@ -111,12 +119,18 @@ while True:
         time.sleep(5)
         continue
 
-    headers = {"content-type": "application/json; charset=utf-8", "Authorization": f"Bearer {config.API_KEY}"}
+    # Create headers with HMAC signature in Authorization header
     dht_data = get_dht_data()
     if dht_data != {}:
-        print(ujson.dumps(dht_data))
+        payload = ujson.dumps(dht_data)
+        signature = create_signature(payload, config.API_KEY)
+        headers = {
+            "content-type": "application/json; charset=utf-8",
+            "Authorization": f"HMAC {signature}"
+        }
+        print(payload)
         try:
-            dht_response = urequests.post(f"https://{config.API_HOST}/dht", headers=headers, data=ujson.dumps(dht_data), timeout=1)
+            dht_response = urequests.post(f"https://{config.API_HOST}/dht", headers=headers, data=payload, timeout=1)
             print(dht_response.text)
             dht_response.close()
         except:
@@ -124,13 +138,19 @@ while True:
 
     pms_data = get_pms_data()
     if pms_data != {}:
-        print(ujson.dumps(pms_data))
-    try:
-        pms_response = urequests.post(f"https://{config.API_HOST}/pms", headers=headers, data=ujson.dumps(pms_data), timeout=1)
-        print(pms_response.text)
-        pms_response.close()
-    except:
-        print("PMS request error")
-        continue
+        payload = ujson.dumps(pms_data)
+        signature = create_signature(payload, config.API_KEY)
+        headers = {
+            "content-type": "application/json; charset=utf-8",
+            "Authorization": f"HMAC {signature}"
+        }
+        print(payload)
+        try:
+            pms_response = urequests.post(f"https://{config.API_HOST}/pms", headers=headers, data=payload, timeout=1)
+            print(pms_response.text)
+            pms_response.close()
+        except:
+            print("PMS request error")
+            continue
 
     time.sleep(5)
